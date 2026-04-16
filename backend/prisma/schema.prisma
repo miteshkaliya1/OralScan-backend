@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  PATIENT
+  DOCTOR
+  ADMIN
+}
+
+enum CaseStatus {
+  PENDING
+  IN_REVIEW
+  REVIEWED
+}
+
+enum PaymentStatus {
+  CREATED
+  PAID
+  FAILED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+enum TobaccoHistory {
+  NEVER
+  FORMER
+  OCCASIONAL
+  DAILY
+}
+
+model User {
+  id           String           @id @default(uuid())
+  name         String
+  email        String?          @unique
+  mobileNumber String?          @unique
+  passwordHash String
+  role         Role
+  age          Int?
+  gender       Gender?
+  address      String?
+  tobaccoGutkaHistory TobaccoHistory?
+  tobaccoGutkaDetails String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  patientCases Case[]           @relation("PatientCases")
+  doctorCases  Case[]           @relation("DoctorCases")
+  messagesSent WhatsAppMessage[]
+}
+
+model Case {
+  id               String           @id @default(uuid())
+  patientId        String
+  doctorId         String?
+  status           CaseStatus       @default(PENDING)
+  urgency          String           @default("low")
+  aiSummary        Json?
+  aiRiskScore      Float?
+  doctorNotes      String?
+  finalOpinion     String?
+  recommendations  String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  patient          User             @relation("PatientCases", fields: [patientId], references: [id])
+  doctor           User?            @relation("DoctorCases", fields: [doctorId], references: [id])
+  images           CaseImage[]
+  payments         Payment[]
+  whatsappMessages WhatsAppMessage[]
+}
+
+model CaseImage {
+  id        String   @id @default(uuid())
+  caseId    String
+  objectKey String
+  fileUrl   String
+  createdAt DateTime @default(now())
+
+  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+}
+
+model Payment {
+  id               String        @id @default(uuid())
+  caseId           String
+  amountPaise      Int
+  razorpayOrderId  String?       @unique
+  razorpayPaymentId String?
+  status           PaymentStatus @default(CREATED)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  case             Case          @relation(fields: [caseId], references: [id], onDelete: Cascade)
+}
+
+model WhatsAppMessage {
+  id          String   @id @default(uuid())
+  caseId       String
+  senderId     String
+  toPhone      String
+  messageBody  String
+  providerId   String?
+  sentAt       DateTime @default(now())
+
+  case         Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  sender       User     @relation(fields: [senderId], references: [id])
+}
