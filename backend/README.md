@@ -1,63 +1,101 @@
-# OralScan Backend (Node.js)
+# OralScan Backend
 
-Backend API for OralScan with:
+Backend API for OralScan patient and doctor workflows.
+
+## Features
 
 - JWT authentication
-- Role-based access control (PATIENT, DOCTOR, ADMIN)
-- PostgreSQL via Prisma
-- S3-compatible image storage
-- CNN cloud inference API proxy
-- Razorpay order + webhook handling
-- WhatsApp Cloud API messaging
+- Role-based access control for PATIENT, DOCTOR, ADMIN
+- Prisma + PostgreSQL data layer
+- S3-compatible uploads with local fallback in development
+- AI classification proxy endpoint
+- Razorpay order and webhook endpoints
+- WhatsApp notification endpoint
 
-## 1. Setup
+## Setup
+
+1. Go to backend directory
 
 ```bash
 cd backend
+```
+
+2. Configure environment
+
+```bash
 cp .env.example .env
+```
+
+3. Install dependencies and prepare database
+
+```bash
 npm install
 npm run prisma:generate
 npm run prisma:migrate
 npm run seed
+```
+
+4. Start backend
+
+```bash
 npm run dev
 ```
 
-Health check: `GET http://localhost:8080/health`
+Health check:
 
-## 2. API Summary
+```text
+GET http://localhost:8080/health
+```
 
-### Auth
+## Scripts
 
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-- `GET /api/auth/me`
+```bash
+npm run dev
+npm run start
+npm run prisma:generate
+npm run prisma:migrate
+npm run prisma:studio
+npm run seed
+```
 
-### Uploads (S3-compatible)
+## Seeded Accounts (Development)
 
-- `POST /api/uploads` (multipart form-data: `image`)
+- Patient identifier: patient@oralscan.test or 9876543210
+- Patient password: Pass@1234
+- Doctor identifier: doctor@oralscan.test or 9898989898
+- Doctor password: Pass@1234
 
-### Cases
+## Key API Endpoints
 
-- `POST /api/cases` (PATIENT/ADMIN)
-- `GET /api/cases/me`
-- `GET /api/cases/:id`
-- `PATCH /api/cases/:id/review` (DOCTOR/ADMIN)
+Auth:
+- POST /api/auth/register
+- POST /api/auth/login
+- GET /api/auth/me
 
-### AI (CNN cloud inference)
+Uploads:
+- POST /api/uploads (multipart form-data field: image, oral image upload route)
+- POST /api/uploads/document (multipart form-data field: file, supports PDF and image uploads for supporting reports)
 
-- `POST /api/ai/classify` (DOCTOR/ADMIN)
+Cases:
+- POST /api/cases
+- GET /api/cases/me
+- GET /api/cases/:id
+- PATCH /api/cases/:id/review
 
-### Payments (Razorpay)
+AI:
+- POST /api/ai/classify
 
-- `POST /api/payments/order`
-- `POST /api/payments/webhook`
+Payments:
+- POST /api/payments/order
+- POST /api/payments/webhook
 
-### WhatsApp
+WhatsApp:
+- POST /api/whatsapp/send
 
-- `POST /api/whatsapp/send` (DOCTOR/ADMIN)
+## Local Development Notes
 
-## 3. Notes
-
-- AI URL, Razorpay, and WhatsApp env vars are required for full production behavior.
-- Configure `S3_PUBLIC_BASE_URL` to serve uploaded case images directly.
-- Use a strong `JWT_SECRET` in production.
+- Set CORS_ORIGIN to include frontend origin, usually http://localhost:5173 in local development.
+- Local file fallback is served from uploads-local when development upload to S3 is unavailable.
+- When AI_INFERENCE_URL is missing in development, API classification falls back to a local mock result using model cnn-oral-lesion-v1.
+- Use strong JWT_SECRET and real provider credentials in production.
+- If port 8080 is already in use, stop the existing backend process before running npm run start.

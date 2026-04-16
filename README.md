@@ -1,57 +1,147 @@
 # OralScan
 
-OralScan is split into two applications:
+OralScan is a full-stack oral screening MVP with separate patient and doctor workflows.
 
-- Frontend at the repository root: React, Vite, TypeScript, Tailwind CSS
-- Backend in `backend/`: Node.js, Express, Prisma, PostgreSQL, S3-compatible uploads, Razorpay, WhatsApp, AI inference proxy
+It includes:
+- Patient onboarding (mobile or email login)
+- Guided oral image upload and supporting document upload (biopsy and consultation reports)
+- AI triage pipeline with multilingual summaries
+- Payment step before final analysis
+- Doctor review workflow with structured notes
+- In-app notification bell for patient and doctor dashboards
 
-The frontend talks to the backend only through `/api` endpoints. In local development, Vite proxies `/api` requests to the backend server on port `8080`.
+## Repository Structure
 
-## Stack
+- frontend/: React 19 + Vite + TypeScript + Tailwind CSS v4
+- backend/: Express + Prisma + PostgreSQL + JWT + S3/local uploads + Razorpay + WhatsApp
 
+## Tech Stack
+
+Frontend:
 - React 19
 - Vite
 - TypeScript
 - Tailwind CSS v4
+- React Router
 - jsPDF
 
-## Frontend
+Backend:
+- Node.js + Express
+- Prisma + PostgreSQL
+- JWT auth + role-based access control
+- Multer upload handling
+- S3-compatible object storage (with local fallback in development)
 
-Run the frontend from the repository root:
+## Quick Start
+
+Prerequisites:
+- Node.js 20+
+- npm
+- PostgreSQL running locally
+
+1. Install dependencies at root
 
 ```bash
 npm install
-cp .env.example .env
-npm run dev
 ```
 
-Default frontend environment:
+2. Configure env files
 
 ```bash
-VITE_API_BASE_URL=/api
+cp frontend/.env.example frontend/.env
+cp backend/.env.example backend/.env
 ```
 
-## Backend
-
-Node backend is available under `backend/` with JWT auth, role-based access, PostgreSQL (Prisma), S3-compatible storage, AI cloud inference API proxy, Razorpay, and WhatsApp APIs.
+3. Backend setup
 
 ```bash
 cd backend
-cp .env.example .env
 npm install
 npm run prisma:generate
 npm run prisma:migrate
 npm run seed
+```
+
+4. Run apps (from repository root)
+
+```bash
 npm run dev
 ```
 
-Default backend origin allowlist:
+This starts:
+- Frontend: http://localhost:5173
+- Backend: http://localhost:8080
+
+## Scripts
+
+From repository root:
 
 ```bash
-CORS_ORIGIN=http://localhost:5173
+npm run dev
+npm run dev:frontend
+npm run dev:backend
+npm run build
+npm run lint
 ```
 
-## Notes
+From backend/:
 
-- Only `vite.config.ts` is required. `vite.config.js` and `vite.config.d.ts` are generated artifacts and should not be kept.
-- Configure production credentials and allowed frontend origins in the frontend and backend env files before deployment.# OralScan
+```bash
+npm run dev
+npm run start
+npm run prisma:generate
+npm run prisma:migrate
+npm run seed
+```
+
+From frontend/:
+
+```bash
+npm run dev
+npm run build
+npm run preview
+npm run lint
+```
+
+## Seeded Accounts (Development)
+
+- Patient identifier: patient@oralscan.test or 9876543210
+- Patient password: Pass@1234
+- Doctor identifier: doctor@oralscan.test or 9898989898
+- Doctor password: Pass@1234
+
+## Notification Behavior
+
+Header bell notifications are role-based:
+
+- Doctor receives notification when patient submits a case for review.
+- Patient receives notification when doctor adds review content or marks case reviewed.
+
+Notifications are derived from case state and refreshed periodically while logged in.
+
+## Key Backend Endpoints
+
+Auth:
+- POST /api/auth/register
+- POST /api/auth/login
+- GET /api/auth/me
+
+Uploads:
+- POST /api/uploads (form field: image, oral images)
+- POST /api/uploads/document (form field: file, supports PDF/images)
+
+Cases:
+- POST /api/cases
+- GET /api/cases/me
+- GET /api/cases/:id
+- PATCH /api/cases/:id/review
+
+System:
+- GET /health
+
+## Local Development Notes
+
+- Frontend uses Vite proxy to reach backend via /api.
+- Backend serves local uploaded files in development from /uploads-local.
+- Backend uses a development AI fallback response when AI inference URL is not configured.
+- If backend start fails with EADDRINUSE on 8080, another backend process is already running.
