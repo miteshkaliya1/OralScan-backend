@@ -28,6 +28,10 @@ export const env = {
     apiKey: process.env.AI_INFERENCE_API_KEY || "",
   },
 
+  anthropic: {
+    apiKey: process.env.ANTHROPIC_API_KEY || "",
+  },
+
   razorpay: {
     keyId: process.env.RAZORPAY_KEY_ID || "",
     keySecret: process.env.RAZORPAY_KEY_SECRET || "",

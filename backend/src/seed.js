@@ -28,8 +28,11 @@ async function main() {
       name: "Dr. Nidhi Shah",
       email: "doctor@oralscan.test",
       mobileNumber: "9898989898",
+      phone: "+91 98989 89898",
       role: "DOCTOR",
       passwordHash,
+      hospitalName: "City Dental Hospital",
+      hospitalAddress: "123 Medical Plaza, Mumbai, Maharashtra 400001",
     },
   });
 

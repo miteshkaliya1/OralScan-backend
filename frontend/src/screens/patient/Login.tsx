@@ -9,8 +9,8 @@ export default function PatientLogin() {
   const { language, setSession } = useApp();
   const copy = appCopy[language];
   const navigate = useNavigate();
-  const [identifier, setIdentifier] = useState("9876543210");
-  const [password, setPassword] = useState("Pass@1234");
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 

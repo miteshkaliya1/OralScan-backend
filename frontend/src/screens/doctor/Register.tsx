@@ -11,6 +11,9 @@ export default function DoctorRegister() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [hospitalName, setHospitalName] = useState("");
+  const [hospitalAddress, setHospitalAddress] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -19,7 +22,15 @@ export default function DoctorRegister() {
     try {
       setLoading(true);
       setError(null);
-      const auth = await register({ name, email, password, role: "DOCTOR" });
+      const auth = await register({ 
+        name, 
+        email: email.trim() || undefined, 
+        phone: phone.trim() || undefined,
+        hospitalName: hospitalName.trim() || undefined,
+        hospitalAddress: hospitalAddress.trim() || undefined,
+        password, 
+        role: "DOCTOR" 
+      });
       setSession(auth.token, auth.user);
       await refreshDoctorCases();
       navigate("/doctor");
@@ -54,15 +65,29 @@ export default function DoctorRegister() {
 
             <div className="grid gap-4">
               <div>
-                <label className="mb-1.5 block text-xs font-bold uppercase tracking-[0.14em] text-stone-500">Clinician name</label>
+                <label className="mb-1.5 block text-xs font-bold uppercase tracking-[0.14em] text-stone-500">Clinician name <span className="inline-block text-rose-600">*</span></label>
                 <input className="field" onChange={(e) => setName(e.target.value)} placeholder="Full name" value={name} />
               </div>
-              <div>
-                <label className="mb-1.5 block text-xs font-bold uppercase tracking-[0.14em] text-stone-500">Hospital email</label>
-                <input className="field" onChange={(e) => setEmail(e.target.value)} placeholder="doctor@hospital.com" type="email" value={email} />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="mb-1.5 block text-xs font-bold uppercase tracking-[0.14em] text-stone-500">Hospital email</label>
+                  <input className="field" onChange={(e) => setEmail(e.target.value)} placeholder="doctor@hospital.com" type="email" value={email} />
+                </div>
+                <div>
+                  <label className="mb-1.5 block text-xs font-bold uppercase tracking-[0.14em] text-stone-500">Phone number</label>
+                  <input className="field" onChange={(e) => setPhone(e.target.value)} placeholder="+91 XXXXX XXXXX" type="tel" value={phone} />
+                </div>
               </div>
               <div>
-                <label className="mb-1.5 block text-xs font-bold uppercase tracking-[0.14em] text-stone-500">Password</label>
+                <label className="mb-1.5 block text-xs font-bold uppercase tracking-[0.14em] text-stone-500">Hospital / Clinic name</label>
+                <input className="field" onChange={(e) => setHospitalName(e.target.value)} placeholder="Hospital or clinic name" value={hospitalName} />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-bold uppercase tracking-[0.14em] text-stone-500">Hospital / Clinic address</label>
+                <textarea className="field min-h-[80px] resize-y" onChange={(e) => setHospitalAddress(e.target.value)} placeholder="Full address" value={hospitalAddress} />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-bold uppercase tracking-[0.14em] text-stone-500">Password <span className="inline-block text-rose-600">*</span></label>
                 <input className="field" onChange={(e) => setPassword(e.target.value)} placeholder="Minimum 8 characters" type="password" value={password} />
               </div>
             </div>

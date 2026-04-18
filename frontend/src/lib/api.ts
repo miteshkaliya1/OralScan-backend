@@ -8,10 +8,13 @@ type ApiUser = {
   name: string;
   email: string | null;
   mobileNumber: string | null;
+  phone?: string | null;
   role: "PATIENT" | "DOCTOR" | "ADMIN";
   age?: number | null;
   gender?: "MALE" | "FEMALE" | "OTHER" | "PREFER_NOT_TO_SAY" | null;
   address?: string | null;
+  hospitalName?: string | null;
+  hospitalAddress?: string | null;
   tobaccoGutkaHistory?: "NEVER" | "FORMER" | "OCCASIONAL" | "DAILY" | null;
   tobaccoGutkaDetails?: string | null;
 };
@@ -82,11 +85,14 @@ export async function register(input: {
   name: string;
   email?: string;
   mobileNumber?: string;
+  phone?: string;
   password: string;
   role: "PATIENT" | "DOCTOR" | "ADMIN";
   age?: number;
   gender?: "MALE" | "FEMALE" | "OTHER" | "PREFER_NOT_TO_SAY";
   address?: string;
+  hospitalName?: string;
+  hospitalAddress?: string;
   tobaccoGutkaHistory?: "NEVER" | "FORMER" | "OCCASIONAL" | "DAILY";
   tobaccoGutkaDetails?: string;
 }) {

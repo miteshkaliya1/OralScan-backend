@@ -113,7 +113,7 @@ export default function PatientRegister() {
             <div className="grid gap-4 sm:grid-cols-2">
               {/* Full name */}
               <div className="sm:col-span-2">
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-stone-500">Full name *</label>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-stone-500">Full name <span className="inline-block text-rose-600">*</span></label>
                 <input
                   className={`field ${fieldErrors.name ? "border-rose-400 focus:border-rose-500" : ""}`}
                   onBlur={() => touch("name")}
@@ -159,7 +159,7 @@ export default function PatientRegister() {
 
               {/* Age */}
               <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-stone-500">Age *</label>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-stone-500">Age <span className="inline-block text-rose-600">*</span></label>
                 <input
                   className={`field ${fieldErrors.age ? "border-rose-400" : ""}`}
                   min={1}
@@ -174,7 +174,7 @@ export default function PatientRegister() {
 
               {/* Gender */}
               <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-stone-500">Gender *</label>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-stone-500">Gender <span className="inline-block text-rose-600">*</span></label>
                 <select
                   className="field"
                   onChange={(e) => setGender(e.target.value as "MALE" | "FEMALE" | "OTHER" | "PREFER_NOT_TO_SAY")}
@@ -189,7 +189,7 @@ export default function PatientRegister() {
 
               {/* Address */}
               <div className="sm:col-span-2">
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-stone-500">Address *</label>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-stone-500">Address <span className="inline-block text-rose-600">*</span></label>
                 <textarea
                   className={`field min-h-[90px] resize-y ${fieldErrors.address ? "border-rose-400" : ""}`}
                   onBlur={() => touch("address")}
@@ -202,7 +202,7 @@ export default function PatientRegister() {
 
               {/* Tobacco / Gutka history */}
               <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-stone-500">Tobacco / Gutka history *</label>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-stone-500 whitespace-nowrap">Tobacco / Gutka history <span className="inline-block text-rose-600">*</span></label>
                 <select
                   className="field"
                   onChange={(e) => setTobaccoGutkaHistory(e.target.value as "NEVER" | "FORMER" | "OCCASIONAL" | "DAILY")}
@@ -228,7 +228,7 @@ export default function PatientRegister() {
 
               {/* Password */}
               <div className="sm:col-span-2">
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-stone-500">Password *</label>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-stone-500">Password <span className="inline-block text-rose-600">*</span></label>
                 <input
                   className={`field ${fieldErrors.password ? "border-rose-400" : ""}`}
                   onBlur={() => touch("password")}
