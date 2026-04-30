@@ -1,0 +1,16 @@
+services:
+  - name: oralscan-backend
+    repo: https://github.com/miteshkaliya1/OralScan
+    root: backend
+    buildCommand: npm install && npx prisma generate
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CORS_ORIGIN
+        value: https://oralscan-frontend.onrender.com
+    plan: free
