@@ -2,7 +2,7 @@ services:
   - name: oralscan-backend
     repo: https://github.com/miteshkaliya1/OralScan
     root: backend
-    buildCommand: npm install && npx prisma generate
+    buildCommand: npm install && npm run build
     startCommand: node src/index.js
     envVars:
       - key: NODE_ENV
