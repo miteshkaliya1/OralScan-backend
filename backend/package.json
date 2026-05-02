@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": "^22.0.0"
+  },
   "scripts": {
     "build": "npx prisma generate",
     "dev": "nodemon src/index.js",
