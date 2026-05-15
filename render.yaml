@@ -1,0 +1,34 @@
+services:
+  - name: oralscan-backend
+    repo: https://github.com/miteshkaliya1/OralScan-backend
+    branch: main
+    nodeVersion: 22
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CORS_ORIGIN
+        value: https://oralscan-frontend.onrender.com
+    plan: free
+services:
+  - name: oralscan-backend
+    repo: https://github.com/miteshkaliya1/OralScan
+    root: backend
+    nodeVersion: 22
+    buildCommand: npm install --workspace=backend && npm run build --workspace=backend
+    startCommand: node src/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CORS_ORIGIN
+        value: https://oralscan-frontend.onrender.com
+    plan: free
