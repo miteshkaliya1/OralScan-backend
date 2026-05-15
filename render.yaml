@@ -1,8 +1,9 @@
 services:
   - name: oralscan-backend
-    repo: https://github.com/miteshkaliya1/OralScan-backend
+    repo: https://github.com/miteshkaliya1/OralScan
+    root: backend
     nodeVersion: 22
-    buildCommand: npm install
+    buildCommand: npm install --workspace=backend && npm run build --workspace=backend
     startCommand: node src/index.js
     envVars:
       - key: NODE_ENV
