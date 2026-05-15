@@ -1,4 +1,0 @@
-- Build OralScan as a React TypeScript frontend application.
-- Keep the implementation focused on a product-grade MVP for patient and doctor workflows.
-- Prefer reusable components, mock domain data, and clear placeholders for external integrations.
-- Preserve Tailwind-based styling and the existing visual language unless a task requires changes.
